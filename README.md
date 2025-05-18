@@ -6,9 +6,7 @@ A lightweight, browser‑based “Gratitude Token” clicker game built with pur
 
 ## 🎮 Demo
 
-![mindfulness-clicker-demo](https://user-images.githubusercontent.com/YOUR_USERNAME/YOUR_REPO_NAME/SCREENSHOT.png)
-
-*(Replace with your hosted demo link or a screenshot.)*
+![mindfulness-clicker-demo](https://user-images.githubusercontent.com/Pacify-14/Mindfullness-Game/SCREENSHOT.png)
 
 ---
 
