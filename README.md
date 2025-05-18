@@ -1,4 +1,4 @@
-# Boogloo Clicker
+# Boogloo
 
 A lightweight, browser‑based “Gratitude Token” clicker game built with pure HTML, CSS, and JavaScript. Click floating tokens to collect points and receive gentle mindfulness prompts.
 
