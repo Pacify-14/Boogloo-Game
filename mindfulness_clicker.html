@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mindfulness Clicker</title>
+  <style>
+    body { margin: 0; overflow: hidden; font-family: sans-serif; }
+    #scoreboard {
+      position: absolute; top: 10px; left: 10px;
+      background: rgba(255,255,255,0.8); padding: 8px 12px; border-radius: 6px;
+      font-size: 20px;
+    }
+    #prompt {
+      position: absolute; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.9); padding: 10px 14px; border-radius: 8px;
+      font-size: 22px; display: none;
+    }
+    canvas { display: block; background: #eef; }
+  </style>
+</head>
+<body>
+  <div id="scoreboard">Score: 0</div>
+  <div id="prompt"></div>
+  <canvas id="gameCanvas"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let tokens = [];
+    let score = 0;
+    const prompts = [
+      "Take a deep breath.",
+      "Notice three things you're grateful for.",
+      "Smile and appreciate this moment."
+    ];
+    const scoreBoard = document.getElementById('scoreboard');
+    const promptBox = document.getElementById('prompt');
+
+    function spawnToken() {
+      const size = 30 + Math.random() * 20;
+      const x = size + Math.random() * (width - 2 * size);
+      const y = size + Math.random() * (height - 2 * size);
+      tokens.push({ x, y, size });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      tokens.forEach(t => {
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'green';
+        ctx.fill();
+        ctx.strokeStyle = '#c05';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      });
+      requestAnimationFrame(draw);
+    }
+
+    canvas.addEventListener('click', e => {
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      for (let i = tokens.length - 1; i >= 0; i--) {
+        const t = tokens[i];
+        if (Math.hypot(mx - t.x, my - t.y) < t.size) {
+          tokens.splice(i, 1);
+          score++;
+          scoreBoard.textContent = 'Score: ' + score;
+          showPrompt();
+          break;
+        }
+      }
+    });
+
+    function showPrompt() {
+      promptBox.textContent = prompts[Math.floor(Math.random() * prompts.length)];
+      promptBox.style.display = 'block';
+      clearTimeout(promptBox.hideTimeout);
+      promptBox.hideTimeout = setTimeout(() => {
+        promptBox.style.display = 'none';
+      }, 2000);
+    }
+
+    // Spawn tokens periodically
+    setInterval(spawnToken, 1500);
+    draw();
+  </script>
+</body>
+</html>
